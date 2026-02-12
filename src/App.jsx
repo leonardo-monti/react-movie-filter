@@ -1,17 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import movies from './data/Movies'
 
 function App() {
 
   const [searchGenre, setSearchGenre] = useState("")
+  const [filteredMovies, setFilteredMovies] = useState(movies)
+
+  useEffect(() => {
+    if (searchGenre === "") {
+      setFilteredMovies(movies)
+    } else {
+      const filtered = movies.filter(movie =>
+        movie.genre.toLowerCase().includes(searchGenre.toLowerCase())
+      )
+      setFilteredMovies(filtered)
+    }
+  }, [searchGenre])
 
   return (
     <div>
       <h1>BLOCKBUSTER</h1>
 
       <ul>
-        {movies.map((movie) => (
+        {filteredMovies.map((movie) => (
           <li key={movie.title}>
             {movie.title} - {movie.genre}
           </li>
